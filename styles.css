@@ -1,0 +1,456 @@
+/* Root Variables */
+:root {
+    --dark-blue-1: #0a192f;
+    --dark-blue-2: #172a45;
+    --dark-blue-3: #1f3a5f;
+    --light-blue: #64ffda;
+    --text-blue: #8892b0;
+    --bright-blue: #00b4ff;
+    
+    /* Original Variables */
+    --primary-gradient: linear-gradient(135deg, var(--dark-blue-2), var(--dark-blue-3));
+    --secondary-gradient: linear-gradient(135deg, #414345, #232526);
+    --danger-gradient: linear-gradient(135deg, #cb2d3e, #ef473a);
+    --success-gradient: linear-gradient(135deg, #134e5e, #71b280);
+    --background-gradient: linear-gradient(135deg, var(--dark-blue-1), var(--dark-blue-2), var(--dark-blue-3));
+    --card-gradient: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+    --hover-gradient: linear-gradient(135deg, var(--dark-blue-2), var(--dark-blue-3));
+    
+    /* Payment Methods Colors */
+    --gopay-gradient: linear-gradient(135deg, #1D976C, #93F9B9);
+    --dana-gradient: linear-gradient(135deg, #0082c8, #667db6);
+    --bitcoin-gradient: linear-gradient(135deg, #f2994a, #f2c94c);
+    --paypal-gradient: linear-gradient(135deg, #2193b0, #6dd5ed);
+    
+    /* Effects */
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+    --hover-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.25);
+    --button-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Body and Container */
+body {
+    min-height: 100vh;
+    background: var(--background-gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e6f1ff;
+    padding: 20px;
+    background-size: 200% 200%;
+    animation: gradientBG 15s ease infinite;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    background: rgba(10, 25, 47, 0.15);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header Styles */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 3px;
+    background: var(--bright-blue);
+    border-radius: 3px;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Warning Banner */
+.warning {
+    background: linear-gradient(135deg, rgba(23, 42, 69, 0.1), rgba(31, 58, 95, 0.1));
+    padding: 15px 25px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: var(--button-shadow);
+    text-transform: uppercase;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.warning:hover {
+    transform: translateY(-2px);
+    border: 1px solid rgba(100, 255, 218, 0.4);
+}
+
+/* Payment Grid */
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+/* Payment Method Cards */
+.payment-method {
+    background: rgba(23, 42, 69, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 180, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+    opacity: 0.5;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.payment-method:hover {
+    transform: translateY(-5px);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 180, 255, 0.1);
+    background: rgba(31, 58, 95, 0.15);
+    opacity: 1;
+}
+/* Payment Header */
+.payment-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.payment-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 180, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.payment-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.payment-info h3 {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--light-blue);
+    margin-bottom: 5px;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Payment Details */
+.payment-details {
+    margin: 15px 0;
+}
+
+.payment-details p {
+    color: #ffffff;
+    font-size: 1.1em;
+    margin: 8px 0;
+    font-weight: 600;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin: 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.ready {
+    background: linear-gradient(135deg, rgba(10, 79, 79, 0.15), rgba(0, 102, 102, 0.15));
+    border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.not-ready {
+    background: linear-gradient(135deg, rgba(79, 10, 10, 0.15), rgba(102, 0, 0, 0.15));
+    border: 1px solid rgba(255, 100, 100, 0.2);
+}
+
+/* Copy Button */
+.copy-btn {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(23, 42, 69, 0.15), rgba(31, 58, 95, 0.15));
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    padding: 12px 20px;
+    border-radius: 25px;
+    color: var(--light-blue);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.95em;
+    transition: all 0.3s ease;
+    box-shadow: var(--button-shadow);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.copy-btn:hover {
+    border: 1px solid rgba(100, 255, 218, 0.4);
+    background: rgba(31, 58, 95, 0.25);
+    transform: translateY(-2px);
+    box-shadow: var(--hover-shadow);
+}
+
+/* Contact Section */
+.contact-section {
+    text-align: center;
+    margin-top: 40px;
+    padding: 30px;
+    background: rgba(23, 42, 69, 0.05);
+    border-radius: 20px;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.contact-section:hover {
+    transform: translateY(-5px);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+}
+
+.contact-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--light-blue);
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.contact-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(23, 42, 69, 0.15), rgba(31, 58, 95, 0.15));
+    padding: 15px 30px;
+    border-radius: 25px;
+    color: var(--light-blue);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    box-shadow: var(--button-shadow);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.contact-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--hover-shadow);
+    border: 1px solid rgba(100, 255, 218, 0.4);
+    background: rgba(31, 58, 95, 0.25);
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(23, 42, 69, 0.4);
+    color: var(--light-blue);
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(200%);
+    transition: transform 0.3s ease;
+    box-shadow: var(--card-shadow);
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+/* Canvas Styles */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* QRIS Specific Styles */
+.qris-image-container {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 180, 255, 0.1);
+    margin: 15px 0;
+    transition: transform 0.3s ease;
+}
+
+.qris-image-container:hover {
+    transform: scale(1.02);
+}
+
+.qris-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+/* Animations */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        padding: 30px;
+    }
+
+    .payment-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 25px;
+    }
+
+    .header h1 {
+        font-size: 2em;
+    }
+
+    .warning {
+        font-size: 0.9em;
+        padding: 12px 20px;
+    }
+
+    .payment-method {
+        padding: 20px;
+    }
+
+    .contact-button {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .payment-logo {
+        width: 45px;
+        height: 45px;
+    }
+
+    .payment-info h3 {
+        font-size: 1.2em;
+    }
+
+    .payment-details p {
+        font-size: 1em;
+    }
+
+    .copy-btn {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: none;
+        color: #000;
+    }
+
+    .container {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .copy-btn,
+    .contact-button {
+        display: none;
+    }
+}

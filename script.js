@@ -10,13 +10,13 @@ class ParticleSystem {
         left: "0",
         width: "100%",
         height: "100%",
-        zIndex: "-1",
+        zIndex: "0",
         pointerEvents: "none"
       });
-  
+
       document.body.appendChild(this.canvas);
   
-      this.mouse = { x: undefined, y: undefined, radius: 150 };
+      this.mouse = { x: 0, y: 0, radius: 150 };
   
       this.resizeCanvas();
       this.createParticles();
@@ -37,7 +37,8 @@ class ParticleSystem {
   
     createParticles() {
       this.particles = [];
-      const count = Math.min(150, (this.canvas.width * this.canvas.height) / 15000);
+      const maxParticles = 300; // Set a maximum particle count limit
+      const count = Math.min(maxParticles, (this.canvas.width * this.canvas.height) / 15000);
   
       for (let i = 0; i < count; i++) {
         const radius = Math.random() * 2 + 1;
@@ -59,6 +60,7 @@ class ParticleSystem {
     drawParticles() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   
+      const currentTime = Date.now();
       this.particles.forEach(p => {
         p.x += p.speedX;
         p.y += p.speedY;
@@ -81,7 +83,7 @@ class ParticleSystem {
           }
         }
   
-        const glowFactor = 0.5 * Math.sin(0.003 * Date.now() + 10 * p.glowIntensity) + 0.5;
+        const glowFactor = 0.5 * Math.sin(0.003 * currentTime + 10 * p.glowIntensity) + 0.5;
         p.radius = p.baseRadius * (1 + 0.3 * glowFactor);
         p.opacity = p.baseOpacity * (0.8 + 0.2 * glowFactor);
   
@@ -102,23 +104,59 @@ class ParticleSystem {
   
       this.drawConnections();
     }
-  
     drawConnections() {
-      this.particles.forEach((a, i) => {
-        this.particles.slice(i + 1).forEach(b => {
+      const quadtree = new Quadtree({
+        x: 0,
+        y: 0,
+        width: this.canvas.width,
+        height: this.canvas.height
+      });
+
+      this.particles.forEach(p => quadtree.insert(p));
+
+      this.particles.forEach(a => {
+        const range = {
+          x: a.x - 100,
+          y: a.y - 100,
+          width: 200,
+          height: 200
+        };
+
+        const nearbyParticles = quadtree.query(range);
+
+        nearbyParticles.forEach(b => {
+          if (a === b) return;
+
           const dx = a.x - b.x;
           const dy = a.y - b.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-  
-          if (dist < 100) {
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = `rgba(0, 180, 255, ${0.2 * (1 - dist / 100)})`;
-            this.ctx.lineWidth = 0.5;
-            this.ctx.moveTo(a.x, a.y);
-            this.ctx.lineTo(b.x, b.y);
+    const cleanText = text.replace(/-/g, "");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(cleanText).then(() => {
+        showToast("Number copied successfully!", "success");
+      }).catch(err => {
+        showToast("Failed to copy number", "error");
+        console.error("Failed to copy:", err);
+      });
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = cleanText;
+      textarea.style.position = "fixed";
+      textarea.style.top = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        showToast("Number copied successfully!", "success");
+      } catch (err) {
+        showToast("Failed to copy number", "error");
+        console.error("Failed to copy:", err);
+      }
+      document.body.removeChild(textarea);
+    }
             this.ctx.stroke();
           }
-        });
+        );
       });
     }
   
@@ -141,10 +179,11 @@ class ParticleSystem {
   function showToast(message, type = "success") {
     const toast = document.getElementById("toast");
     const icon = toast.querySelector("i");
-    const text = toast.querySelector("span");
-  
-    text.textContent = message;
-    toast.className = `toast ${type}`;
+  window.onerror = function (msg, url, line, col, error) {
+    console.error(`Error: ${msg}\nURL: ${url}\nLine: ${line}\nColumn: ${col}\nError object: ${JSON.stringify(error)}`);
+    showToast("An unexpected error occurred. Please try again later.", "error");
+    return false;
+  };
     icon.className = type === "success" ? "fas fa-check-circle" : "fas fa-times-circle";
   
     toast.classList.add("show");
@@ -153,7 +192,85 @@ class ParticleSystem {
       toast.classList.remove("show");
     }, 3000);
   }
-  
+  class Quadtree {
+    constructor(boundary, capacity = 4) {
+      this.boundary = boundary;
+      this.capacity = capacity;
+      this.points = [];
+      this.divided = false;
+    }
+
+    subdivide() {
+      const { x, y, width, height } = this.boundary;
+      const halfWidth = width / 2;
+      const halfHeight = height / 2;
+
+      this.northeast = new Quadtree({ x: x + halfWidth, y, width: halfWidth, height: halfHeight }, this.capacity);
+      this.northwest = new Quadtree({ x, y, width: halfWidth, height: halfHeight }, this.capacity);
+      this.southeast = new Quadtree({ x: x + halfWidth, y: y + halfHeight, width: halfWidth, height: halfHeight }, this.capacity);
+      this.southwest = new Quadtree({ x, y: y + halfHeight, width: halfWidth, height: halfHeight }, this.capacity);
+
+      this.divided = true;
+    }
+
+    insert(point) {
+      const { x, y, width, height } = this.boundary;
+
+      if (point.x < x || point.x > x + width || point.y < y || point.y > y + height) {
+        return false;
+      }
+
+      if (this.points.length < this.capacity) {
+        this.points.push(point);
+        return true;
+      }
+
+      if (!this.divided) {
+        this.subdivide();
+      }
+
+      return (
+        this.northeast.insert(point) ||
+        this.northwest.insert(point) ||
+        this.southeast.insert(point) ||
+        this.southwest.insert(point)
+      );
+    }
+
+    query(range, found = []) {
+      const { x, y, width, height } = this.boundary;
+
+      if (
+        range.x > x + width ||
+        range.x + range.width < x ||
+        range.y > y + height ||
+        range.y + range.height < y
+      ) {
+        return found;
+      }
+
+      for (const point of this.points) {
+        if (
+          point.x >= range.x &&
+          point.x <= range.x + range.width &&
+          point.y >= range.y &&
+          point.y <= range.y + range.height
+        ) {
+          found.push(point);
+        }
+      }
+
+      if (this.divided) {
+        this.northwest.query(range, found);
+        this.northeast.query(range, found);
+        this.southwest.query(range, found);
+        this.southeast.query(range, found);
+      }
+
+      return found;
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     new ParticleSystem();
   
@@ -178,19 +295,15 @@ class ParticleSystem {
     });
   });
   
-  // Error fallback
-  window.onerror = function (msg, url, line, col, error) {
-    console.error(`Error: ${msg}\nURL: ${url}\nLine: ${line}\nColumn: ${col}\nError object: ${JSON.stringify(error)}`);
-    return false;
-  };
-  
-  // Polyfill for requestAnimationFrame
-  window.requestAnimationFrame =
-    window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.msRequestAnimationFrame ||
-    function (callback) {
-      return setTimeout(callback, 1000 / 60);
+    // Error fallback
+    window.onerror = function (msg, url, line, col, error) {
+      console.error(`Error: ${msg}\nURL: ${url}\nLine: ${line}\nColumn: ${col}\nError object: ${JSON.stringify(error)}`);
+      return false;
     };
   
+    // Polyfill for requestAnimationFrame
+    window.requestAnimationFrame =
+      window.requestAnimationFrame ||
+      function (callback) {
+        return setTimeout(callback, 1000 / 60);
+      };

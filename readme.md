@@ -1,9 +1,9 @@
-# 🚀 Bidzz Payment
+# 🚀 Tojik_proof_93 Payment
 
 <div align="center">
   <img src="https://img.shields.io/badge/status-active-success.svg"/>
   <img src="https://img.shields.io/badge/version-1.0.0-blue.svg"/>
-  <a href="https://muhammadabid7.github.io/payment"><img src="https://img.shields.io/badge/demo-live-green.svg"/></a>
+  <a href="https://fluttergenerator.github.io/payment/"><img src="https://img.shields.io/badge/demo-live-green.svg"/></a>
   <a href="https://t.me/cheatbybidzz"><img src="https://img.shields.io/badge/Channel-Telegram-blue.svg"/></a>
 </div>
 
@@ -11,7 +11,7 @@
 
 Bidzz Payment is a modern, interactive payment gateway interface designed with user experience in mind. Featuring a stunning particle animation background and smooth transitions, this payment system provides a seamless experience for processing various payment methods including DANA, GoPay, PayPal, and Bitcoin.
 
-[▶️ Live Demo](https://muhammadabid7.github.io/payment)
+[▶️ Live Demo](https://fluttergenerator.github.io/payment/)
 
 ## ✨ Features
 

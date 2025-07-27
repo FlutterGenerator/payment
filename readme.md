@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/badge/status-active-success.svg"/>
   <img src="https://img.shields.io/badge/version-1.0.0-blue.svg"/>
   <a href="https://fluttergenerator.github.io/payment/"><img src="https://img.shields.io/badge/demo-live-green.svg"/></a>
-  <a href="https://t.me/cheatbybidzz"><img src="https://img.shields.io/badge/Channel-Telegram-blue.svg"/></a>
+  <a href="https://t.me/linkuzbio"><img src="https://img.shields.io/badge/Channel-Telegram-blue.svg"/></a>
 </div>
 
 ## 🌟 Overview
